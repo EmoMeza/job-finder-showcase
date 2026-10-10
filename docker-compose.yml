@@ -1,0 +1,45 @@
+name: job-finder
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_PATH: /app/data/job-finder.sqlite
+      # El portal de demostración corre dentro de la API y se publica para pedir el enlace de
+      # ingreso desde el navegador.
+      DEMO_PORTAL_HOST: 0.0.0.0
+    ports:
+      - '127.0.0.1:${DEMO_PORTAL_PORT:-4100}:${DEMO_PORTAL_PORT:-4100}'
+    volumes:
+      - data:/app/data
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://localhost:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    # Solo se publica en BIND_ADDRESS (por defecto localhost): el reverse proxy HTTPS del
+    # servidor es la única entrada desde internet. Ver docs/adr/0010-despliegue-servidor-propio.md.
+    ports:
+      - '${BIND_ADDRESS:-127.0.0.1}:${WEB_PORT:-8080}:80'
+
+volumes:
+  data:

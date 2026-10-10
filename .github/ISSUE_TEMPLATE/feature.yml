@@ -1,0 +1,23 @@
+name: Funcionalidad
+description: Nueva funcionalidad o mejora
+labels: [enhancement]
+body:
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo
+      description: Qué problema resuelve y para quién.
+    validations:
+      required: true
+  - type: textarea
+    id: alcance
+    attributes:
+      label: Alcance
+      description: Qué incluye y qué queda fuera explícitamente.
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      placeholder: '- [ ] ...'
+    validations:
+      required: true

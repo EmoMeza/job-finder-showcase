@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      nestjs:
+        patterns: ['@nestjs/*']
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # TypeScript 7 aún no es compatible con el CLI de NestJS ni typescript-eslint (ADR 0008).
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+      # Los tipos de Node siguen la versión del runtime (Node 22 LTS); se actualizan junto con él.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: docker
+    directories: [/apps/api, /apps/web]
+    schedule:
+      interval: monthly
+    ignore:
+      # Solo versiones LTS de Node: el cambio de versión mayor se hace a propósito, no por bot.
+      - dependency-name: node
+        update-types: ['version-update:semver-major']

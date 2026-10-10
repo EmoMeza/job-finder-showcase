@@ -1,0 +1,25 @@
+name: Bug
+description: Algo no funciona como se espera
+labels: [bug]
+body:
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Qué pasó
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Cómo reproducirlo
+      placeholder: "1. ...\n2. ..."
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Qué se esperaba
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / artefactos
+      description: Logs de la API, búsqueda (`search_run`) afectada, screenshots.
+      render: text
