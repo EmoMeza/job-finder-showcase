@@ -1,0 +1,125 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/atkinson-hyperlegible-next';
+@plugin '@tailwindcss/typography';
+
+/*
+ * Paleta de Job Finder. Para cambiar un color de toda la app, se cambia aquí.
+ *
+ * Regla de lectura: el fondo es gris azulado; todo lo que se puede editar o es un documento va
+ * sobre "hoja" blanca con borde marcado. El destacador amarillo marca lo que la IA completó desde
+ * el CV y todavía no se revisa.
+ */
+:root {
+  --tinta: #1f2a44; /* texto principal */
+  --tinta-secundaria: #4a5670; /* texto de apoyo (contraste AA sobre fondo y hoja) */
+  --fondo: #eef1f5; /* fondo de la app */
+  --hoja: #ffffff; /* campos editables, paneles y documentos */
+  --petroleo: #1d5c63; /* acciones principales, enlaces, foco */
+  --petroleo-oscuro: #154349; /* hover de acciones */
+  --petroleo-suave: #dcebec; /* estados seleccionados */
+  --destacador: #ffe45c; /* prellenado por la IA, sin revisar */
+  --destacador-suave: #fff6c2;
+  --linea: #8e9aab; /* borde de campos editables: visible a propósito */
+  --linea-suave: #d3dae3; /* separadores y bordes de paneles */
+  --error: #b42318;
+
+  /* Variables que usan los componentes de shadcn/ui, apuntando a la paleta. */
+  --background: var(--fondo);
+  --foreground: var(--tinta);
+  --card: var(--hoja);
+  --card-foreground: var(--tinta);
+  --popover: var(--hoja);
+  --popover-foreground: var(--tinta);
+  --primary: var(--petroleo);
+  --primary-foreground: #ffffff;
+  --secondary: var(--petroleo-suave);
+  --secondary-foreground: var(--petroleo-oscuro);
+  --muted: var(--fondo);
+  --muted-foreground: var(--tinta-secundaria);
+  --accent: var(--petroleo-suave);
+  --accent-foreground: var(--petroleo-oscuro);
+  --destructive: var(--error);
+  --border: var(--linea-suave);
+  --input: var(--linea);
+  --ring: var(--petroleo);
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --font-sans: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+
+  /* Nombres propios de la paleta, para usar directo en clases (ej. bg-destacador-suave). */
+  --color-petroleo-oscuro: var(--petroleo-oscuro);
+  --color-destacador: var(--destacador);
+  --color-destacador-suave: var(--destacador-suave);
+  --color-linea-suave: var(--linea-suave);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  /* Todo lo clicable muestra la mano. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  summary,
+  select:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/*
+ * Destacador: campo que la IA completó desde el CV y que todavía no se revisa (ver
+ * `PrefilledContext`). Se ve como marcado con destacador; desaparece al avanzar de paso.
+ * Va fuera de las capas de Tailwind a propósito: así tiene prioridad sobre las clases utilitarias
+ * del campo (ej. `bg-card`).
+ */
+.ai-prefilled :is(input, textarea, select) {
+  background-color: var(--destacador-suave);
+  border-color: #d9b400;
+  box-shadow: inset 4px 0 0 var(--destacador);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
