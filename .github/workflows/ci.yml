@@ -46,11 +46,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Se revisa todo el historial con la CLI. La acción de gitleaks revisa solo el rango del
+      # push y falla en el primer push de un repo, cuyo primer commit no tiene padre.
+      - name: gitleaks
+        run: >
+          docker run --rm -v "$PWD":/repo zricethezav/gitleaks:v8.24.3
+          detect --source /repo --redact --no-banner --verbose
