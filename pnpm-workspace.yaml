@@ -1,0 +1,9 @@
+packages:
+  - apps/*
+  - packages/*
+
+# pnpm bloquea scripts de instalación por defecto; se decide explícitamente por paquete.
+allowBuilds:
+  esbuild: true
+  # Trae binarios precompilados (prebuilds/); compilar con node-gyp no es necesario.
+  better-sqlite3: false

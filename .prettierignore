@@ -1,0 +1,7 @@
+pnpm-lock.yaml
+dist
+coverage
+data
+apps/api/drizzle/meta
+# Los fixtures se guardan tal como los entrega cada portal.
+**/__fixtures__

@@ -1,0 +1,25 @@
+{
+  "name": "job-finder",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.3.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter './packages/*' build && pnpm --recursive --parallel dev",
+    "cli": "pnpm --filter @job-finder/api cli",
+    "playwright:install": "pnpm --filter @job-finder/sources exec playwright install chromium",
+    "build": "pnpm --recursive build",
+    "typecheck": "pnpm --recursive typecheck",
+    "test": "pnpm --recursive test",
+    "lint": "oxlint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "oxlint": "^1.87.0",
+    "prettier": "^3.9.9",
+    "typescript": "~6.0.3"
+  }
+}
